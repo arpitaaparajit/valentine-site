@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine 💛</title>
+
+<style>
+/* ===================== GLOBAL ===================== */
+body {
+    margin: 0;
+    font-family: 'Comic Sans MS', cursive;
+    background: #fff9c4;
+    overflow-x: hidden;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ===================== LEFT SIDE ===================== */
+.left {
+    flex: 1;
+    background: #fffde7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.left img {
+    max-width: 90%;
+    border-radius: 25px;
+    box-shadow: 0 0 25px rgba(255, 193, 7, 0.7);
+}
+
+/* ===================== RIGHT SIDE ===================== */
+.right {
+    flex: 1;
+    padding: 30px;
+    text-align: center;
+    position: relative;
+}
+
+h1 {
+    font-size: 48px;
+    color: #fbc02d;
+}
+
+.question {
+    font-size: 26px;
+    margin: 30px 0;
+}
+
+.options button {
+    width: 80%;
+    max-width: 300px;
+    padding: 14px;
+    margin: 15px auto;
+    border-radius: 30px;
+    border: none;
+    background: #ffeb3b;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.options button:hover {
+    background: #fdd835;
+}
+
+.hidden {
+    display: none;
+}
+
+/* ===================== STICKERS ===================== */
+.sticker {
+    position: absolute;
+    width: 60px;
+    animation: float 4s infinite ease-in-out;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-25px); }
+    100% { transform: translateY(0); }
+}
+
+/* ===================== SLIDER ===================== */
+.slider {
+    width: 80%;
+    margin: 20px;
+}
+
+/* ===================== CONFETTI ===================== */
+.confetti {
+    position: fixed;
+    top: -20px;
+    width: 20px;
+    animation: fall 4s linear infinite;
+}
+
+@keyframes fall {
+    to { transform: translateY(120vh) rotate(360deg); }
+}
+
+/* ===================== MOBILE VERSION ===================== */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    h1 {
+        font-size: 36px;
+    }
+
+    .question {
+        font-size: 22px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ===================== LEFT IMAGE ===================== -->
+    <div class="left">
+        <!-- 🔴 CHANGE IMAGE SRC PER PAGE -->
+        <img id="pageImage" src="images/page1.jpg">
+    </div>
+
+    <!-- ===================== PAGE 1 ===================== -->
+    <div class="right" id="page1">
+
+        <h1>HELLOOOOOO</h1>
+
+        <!-- 🔴 ADD QUESTION 1 HERE --> What was the platform used for the first ever text sent by any of us to any of us?
+        <div class="question">
+            <!-- QUESTION 1 GOES HERE -->
+        </div>
+
+        <div class="options">
+            <!-- 🔴 ANSWER A --> Instagram
+            <button onclick="wrongCat()">a) </button>
+
+            <!-- ✅ CORRECT ANSWER -->
+            <!-- 🔴 ANSWER B --> Facebook
+            <button onclick="goPage2()">b) </button>
+
+            <!-- 🔴 ANSWER C --> Whatsapp
+            <button onclick="wrongDog()">c) </button>
+        </div>
+    </div>
+
+    <!-- ===================== PAGE 2 ===================== -->
+    <div class="right hidden" id="page2">
+
+        <!-- 🔴 ADD QUESTION 2 HERE --> How many days has it been since we started talking to each other?
+        <div class="question">
+            <!-- QUESTION 2 GOES HERE -->
+        </div>
+
+        <input type="range" min="1" max="3000" value="2700" class="slider"
+               oninput="checkSlider(this.value)">
+
+        <img src="stickers/cat-happy.png" width="60">
+        <img src="stickers/dog-happy.png" width="60">
+
+        <br><br>
+        <button class="hidden" id="nextBtn" onclick="goPage3()">Next 💛</button>
+    </div>
+
+    <!-- ===================== PAGE 3 ===================== -->
+    <div class="right hidden" id="page3">
+
+        <div class="question">
+            Will you be my Valentine? 💛
+        </div>
+
+        <div class="options">
+            <button onclick="yesValentine()">Yes, obviously 💕</button>
+            <button onclick="wrongFinal()">Hmm, let me think</button>
+        </div>
+
+        <div id="errorMsg" style="color:red; font-size:18px;"></div>
+    </div>
+
+</div>
+
+<script>
+/* ===================== STICKER LOGIC ===================== */
+function dropStickers(src) {
+    for (let i = 0; i < 20; i++) {
+        let img = document.createElement("img");
+        img.src = src;
+        img.className = "sticker";
+        img.style.left = Math.random() * 100 + "%";
+        img.style.top = Math.random() * 100 + "%";
+        document.body.appendChild(img);
+    }
+}
+
+/* ===================== CONFETTI ===================== */
+function confetti() {
+    for (let i = 0; i < 30; i++) {
+        let c = document.createElement("img");
+        c.src = "confetti/confetti.png";
+        c.className = "confetti";
+        c.style.left = Math.random() * 100 + "%";
+        c.style.animationDuration = (Math.random() * 3 + 2) + "s";
+        document.body.appendChild(c);
+    }
+}
+
+/* ===================== PAGE LOGIC ===================== */
+function wrongCat() {
+    dropStickers("stickers/cat-sad.png");
+}
+
+function wrongDog() {
+    dropStickers("stickers/dog-sad.png");
+}
+
+function goPage2() {
+    page1.classList.add("hidden");
+    page2.classList.remove("hidden");
+    pageImage.src = "images/page2.jpg";
+    dropStickers("stickers/heart-yellow.png");
+}
+
+function checkSlider(value) {
+    if (value >= 80) {
+        nextBtn.classList.remove("hidden");
+    }
+}
+
+function goPage3() {
+    page2.classList.add("hidden");
+    page3.classList.remove("hidden");
+    pageImage.src = "images/page3.jpg";
+}
+
+function wrongFinal() {
+    errorMsg.innerHTML =
+        "Wrong button. Try again. I only accept ‘Yes, obviously’";
+    dropStickers("stickers/cat-angry.png");
+    dropStickers("stickers/dog-angry.png");
+}
+
+function yesValentine() {
+    dropStickers("stickers/cat-happy.png");
+    dropStickers("stickers/dog-happy.png");
+    confetti();
+}
+</script>
+
+</body>
+</html>
